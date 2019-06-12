@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender"><!-- appender为配置项，含义为此配置项需要用到ConsoleAppender类去处理 -->
+        <layout class="ch.qos.logback.classic.PatternLayout"><!-- layout为一个展示的形式 -->
+            <pattern><!-- pattern里面放具体的格式 -->
+                %d - %msg%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 根据指定级别过滤 -->
+            <level>ERROR</level><!-- 只输出INFO级别的日志 -->
+            <onMatch>DENY</onMatch><!-- 如果匹配则禁止 -->
+            <onMismatch>ACCEPT</onMismatch><!-- 如果没有匹配则使用 -->
+        </filter>
+        <encoder>
+            <pattern><!-- 设置展示形式 -->
+                %msg%n
+            </pattern>
+        </encoder>
+        <!-- 滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"><!-- 按照时间滚动 -->
+            <!-- 输出路径，可以利用%d在输出文件中加上时间 -->
+            <fileNamePattern>/Users/CH/Desktop/info.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter"><!-- 根据范围过滤 -->
+            <level>ERROR</level><!-- 只输出ERROR级别的日志 -->
+        </filter>
+        <encoder>
+            <pattern><!-- 设置展示形式 -->
+                %msg%n
+            </pattern>
+        </encoder>
+        <!-- 滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"><!-- 按照时间滚动 -->
+            <!-- 输出路径，可以利用%d在输出文件中加上时间 -->
+            <fileNamePattern>/Users/CH/Desktop/error.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+
+    <root level="info"><!-- root表示整个项目都适用，level级别为info -->
+        <appender-ref ref="consoleLog"></appender-ref> <!--关联上方设置的appender -->
+        <appender-ref ref="fileInfoLog"></appender-ref><!-- 关联上方设置的appender -->
+        <appender-ref ref="fileErrorLog"></appender-ref><!-- 关联上方设置的appender -->
+    </root>
+
+</configuration>
